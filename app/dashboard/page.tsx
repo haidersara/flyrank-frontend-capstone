@@ -11,7 +11,7 @@ const stats = [
   { label: "Last Sync", value: "3 min ago", trend: "on time", up: true },
 ];
 
-const filters = ["All", "System", "Billing", "Users"];
+const filters = ["All", "Completed", "Pending", "Syncing"];
 
 const activity = [
   { name: "Max R.", action: "Updated profile settings", time: "2 min ago", status: "Completed" },
@@ -40,9 +40,11 @@ export default function DashboardPage() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [search, setSearch] = useState("");
 
-  const filteredActivity = activity.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredActivity = activity.filter((item) => {
+    const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
+    const matchesFilter = activeFilter === "All" || item.status === activeFilter;
+    return matchesSearch && matchesFilter;
+  });
 
   return (
     <div className="flex min-h-screen bg-black text-white">
