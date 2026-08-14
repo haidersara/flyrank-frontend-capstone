@@ -23,3 +23,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## Conventions
 
 See [rules.md](./rules.md) for stack details, component patterns, and commit guidelines.
+
+## Weekly Reports
+
+Submission write-ups for the FlyRank AI Internship, Front-end AI Engineering track.
+
+- [Week 1 — Environment and AI Toolchain](docs/weekly-reports/Week-1-Environment-and-Toolchain.pdf)
+- [Week 2 — Prompting Fundamentals on Real Tasks](docs/weekly-reports/Week-2-Prompting-Fundamentals.pdf)
