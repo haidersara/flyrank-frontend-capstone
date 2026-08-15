@@ -30,4 +30,4 @@ Submission write-ups for the FlyRank AI Internship, Front-end AI Engineering tra
 
 - [Week 1 — Environment and AI Toolchain](docs/weekly-reports/Week-1-Environment-and-Toolchain.pdf)
 - [Week 2 — Prompting Fundamentals on Real Tasks](docs/weekly-reports/Week-2-Prompting-Fundamentals.pdf)
-[Week 3 — React App and Capstone Skeleton](docs/weekly-reports/Week-3-React-App-and-Capstone-Skeleton.pdf)
+- [Week 3 — React App and Capstone Skeleton](docs/weekly-reports/Week-3-React-App-and-Capstone-Skeleton.pdf)
