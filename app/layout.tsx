@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import Nav from "@/components/Nav";
 import "./globals.css";
+import ChatFab from "@/components/chat-fab";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col bg-bg text-text">
         <Nav />
         <main className="flex-1">{children}</main>
+        <ChatFab />
       </body>
     </html>
   );
