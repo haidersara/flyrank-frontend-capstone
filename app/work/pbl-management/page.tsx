@@ -1,5 +1,8 @@
+import Reveal from "@/components/Reveal";
+
 export default function PblManagement() {
   return (
+    <Reveal>
     <div className="mx-auto flex max-w-3xl flex-col gap-6 px-6 py-16 sm:px-8">
       <p className="font-mono text-sm uppercase tracking-wide text-accent">
         ERP · in progress
@@ -11,6 +14,7 @@ export default function PblManagement() {
         Placeholder — case study on building role-based access control goes
         here. Honestly framed as still partly in progress.
       </p>
-    </div>
+      </div>
+    </Reveal>
   );
 }
