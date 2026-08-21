@@ -15,9 +15,10 @@ export default function Nav() {
         <div className="flex items-start justify-between gap-6">
           <Link
             href="/"
-            className="font-mono text-[13vw] font-bold leading-[0.85] tracking-tight text-main sm:text-[7rem] md:text-[8rem]"
+            className="group inline-flex items-baseline font-mono text-[13vw] font-bold leading-[0.85] tracking-tight text-main sm:text-[7rem] md:text-[8rem]"
           >
-            SARA<span className="text-accent-warm">.</span>
+            SARA
+            <span className="ml-1 text-accent-warm">.</span>
           </Link>
           <div className="mt-2 flex shrink-0 flex-col items-end gap-1 pt-2 text-right">
             <LiveClock />
@@ -40,13 +41,26 @@ export default function Nav() {
             ))}
           </div>
           <div className="flex gap-4 text-text/60">
-            <a href="#" className="transition-colors hover:text-main">
+            <a
+              href="https://github.com/haidersara"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-main"
+            >
               GH
             </a>
-            <a href="#" className="transition-colors hover:text-main">
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-main"
+            >
               LI
             </a>
-            <a href="#" className="transition-colors hover:text-main">
+            <a
+              href="mailto:haidersara456@gmail.com"
+              className="transition-colors hover:text-main"
+            >
               EM
             </a>
           </div>

@@ -11,18 +11,36 @@ export default function Footer() {
       </div>
       <div className="mx-auto flex max-w-5xl flex-col gap-3 border-t border-bg/15 px-6 py-6 font-mono text-xs uppercase tracking-wide text-bg/60 sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <div className="flex flex-wrap gap-4">
-          <span>hello@sarahaider.dev</span>
+          <a
+            href="mailto:haidersara456@gmail.com"
+            className="transition-colors hover:text-bg"
+          >
+            haidersara456@gmail.com
+          </a>
           <span className="text-bg/30">·</span>
           <span>Lahore, PK</span>
         </div>
         <div className="flex gap-4">
-          <a href="#" className="transition-colors hover:text-bg">
+          <a
+            href="https://github.com/haidersara"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-bg"
+          >
             Github
           </a>
-          <a href="#" className="transition-colors hover:text-bg">
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-bg"
+          >
             LinkedIn
           </a>
-          <a href="#" className="transition-colors hover:text-bg">
+          <a
+            href="mailto:haidersara456@gmail.com"
+            className="transition-colors hover:text-bg"
+          >
             Email
           </a>
         </div>
