@@ -9,7 +9,6 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import SearchProjectsTool from "@/components/SearchProjectsTool";
 
 export default function Chat() {
   const { messages, sendMessage, status, stop } = useChat({
@@ -80,41 +79,20 @@ export default function Chat() {
         {messages.map((m) => {
           const isUser = m.role === "user";
           return (
-            <div key={m.id} className="flex flex-col gap-2">
-              {m.parts.map((part, i) => {
-                if (part.type === "text") {
-                  if (!part.text) return null;
-                  return (
-                    <div
-                      key={i}
-                      className={`flex ${isUser ? "justify-end" : "justify-start"}`}
-                    >
-                      <div
-                        className="max-w-[80%] rounded-2xl px-4 py-2 text-sm whitespace-pre-wrap leading-relaxed"
-                        style={{
-                          backgroundColor: isUser ? "#24423F" : "#1E2422",
-                          color: "#F7F9FA",
-                          borderTopRightRadius: isUser ? 4 : undefined,
-                          borderTopLeftRadius: !isUser ? 4 : undefined,
-                        }}
-                      >
-                        {part.text}
-                      </div>
-                    </div>
-                  );
-                }
-
-                if (part.type === "tool-searchProjects") {
-                  return (
-                    <div key={i} className="flex justify-start">
-                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                      <SearchProjectsTool part={part as any} />
-                    </div>
-                  );
-                }
-
-                return null;
-              })}
+            <div key={m.id} className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
+              <div
+                className="max-w-[80%] rounded-2xl px-4 py-2 text-sm whitespace-pre-wrap leading-relaxed"
+                style={{
+                  backgroundColor: isUser ? "#24423F" : "#1E2422",
+                  color: "#F7F9FA",
+                  borderTopRightRadius: isUser ? 4 : undefined,
+                  borderTopLeftRadius: !isUser ? 4 : undefined,
+                }}
+              >
+                {m.parts.map((part, i) =>
+                  part.type === "text" ? <span key={i}>{part.text}</span> : null
+                )}
+              </div>
             </div>
           );
         })}
