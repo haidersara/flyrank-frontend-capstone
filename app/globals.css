@@ -9,6 +9,11 @@
   --color-accent-warm: #d8ab68;
   --color-white: #ffffff;
   --color-line: rgba(28, 51, 48, 0.12);
+
+  --btn-dur-hover: 150ms;
+  --btn-dur-morph: 250ms;
+  --btn-dur-hold: 600ms;
+  --btn-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @theme inline {
@@ -75,6 +80,61 @@ body::after {
   mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 85%);
 }
 
+/* --- Send button lifecycle --- */
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes btn-shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+@keyframes btn-check-in {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.send-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: width var(--btn-dur-morph) var(--btn-ease-standard),
+              background-color var(--btn-dur-hover) ease-out,
+              transform var(--btn-dur-hover) ease-out;
+  will-change: width, transform;
+}
+
+.send-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.send-btn__layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity var(--btn-dur-morph) ease-out,
+              transform var(--btn-dur-morph) ease-out;
+}
+
+.send-btn[data-state="loading"] .send-btn__spinner {
+  animation: btn-spin 800ms linear infinite;
+}
+
+.send-btn[data-state="error"] {
+  animation: btn-shake 400ms var(--btn-ease-standard);
+}
+
+.send-btn[data-state="success"] .send-btn__icon {
+  animation: btn-check-in 200ms ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -83,5 +143,10 @@ body::after {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .send-btn[data-state="loading"] .send-btn__spinner {
+    animation: none;
+    opacity: 0.6;
   }
 }
