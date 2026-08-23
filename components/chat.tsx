@@ -5,7 +5,7 @@
 // Styled with the project's locked Identity Kit:
 //   teal #24423F · near-black #14181A · off-white #F7F9FA · sage #7FA39A
 //   headings: JetBrains Mono · body: Inter
-
+import SendButton from "./SendButton";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import {
@@ -41,7 +41,29 @@ export default function Chat() {
   const sentAt = useRef<Map<string, Date>>(new Map());
 
   const isBusy = status === "submitted" || status === "streaming";
+  const [flashSuccess, setFlashSuccess] = useState(false);
+  const prevStatus = useRef(status);
 
+  useEffect(() => {
+    if (
+      (prevStatus.current === "submitted" || prevStatus.current === "streaming") &&
+      status === "ready" &&
+      !error
+    ) {
+      setFlashSuccess(true);
+      const t = setTimeout(() => setFlashSuccess(false), 700);
+      return () => clearTimeout(t);
+    }
+    prevStatus.current = status;
+  }, [status, error]);
+
+  const sendBtnState = error
+    ? "error"
+    : isBusy
+    ? "loading"
+    : flashSuccess
+    ? "success"
+    : "idle";
   useEffect(() => {
     const el = scrollRef.current;
     if (pinnedToBottom && el) {
@@ -242,7 +264,7 @@ export default function Chat() {
           style={{ backgroundColor: "#1E2422", color: "#F7F9FA", maxHeight: 160 }}
         />
 
-        {isBusy ? (
+                {isBusy ? (
           <button
             type="button"
             onClick={stop}
@@ -252,14 +274,18 @@ export default function Chat() {
             Stop
           </button>
         ) : (
-          <button
-            type="submit"
-            disabled={!input.trim()}
-            className="shrink-0 rounded-full px-4 py-2 text-sm font-medium disabled:opacity-40"
-            style={{ backgroundColor: "#24423F", color: "#F7F9FA" }}
-          >
-            Send
-          </button>
+          <SendButton
+            state={sendBtnState}
+            disabled={!input.trim() && sendBtnState === "idle"}
+            onClick={() => {
+              if (sendBtnState === "error") {
+                regenerate();
+              } else {
+                send(input);
+              }
+            }}
+            retryLabel="Retry"
+          />
         )}
       </form>
     </div>
