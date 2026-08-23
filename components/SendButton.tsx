@@ -5,18 +5,27 @@ import { useEffect, useRef, useState } from "react";
 type BtnState = "idle" | "loading" | "success" | "error";
 
 interface SendButtonProps {
-  onSend: () => Promise<void>;
+  onSend?: () => Promise<void>;
+  onClick?: () => void;
+  state?: BtnState; // if provided, component becomes "controlled" — parent owns state
+  disabled?: boolean;
   idleLabel?: string;
   retryLabel?: string;
 }
 
 export default function SendButton({
   onSend,
+  onClick,
+  state: controlledState,
+  disabled = false,
   idleLabel = "Send",
   retryLabel = "Retry",
 }: SendButtonProps) {
-  const [state, setState] = useState<BtnState>("idle");
+  const [internalState, setInternalState] = useState<BtnState>("idle");
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const isControlled = controlledState !== undefined;
+  const state = isControlled ? controlledState : internalState;
 
   useEffect(() => {
     return () => {
@@ -25,15 +34,21 @@ export default function SendButton({
   }, []);
 
   async function handleClick() {
-    if (state === "loading") return; // interruption guard: ignore clicks mid-flight
+    if (state === "loading" || disabled) return; // interruption guard
 
-    setState("loading");
+    if (isControlled) {
+      onClick?.();
+      return;
+    }
+
+    if (!onSend) return;
+    setInternalState("loading");
     try {
       await onSend();
-      setState("success");
-      resetTimer.current = setTimeout(() => setState("idle"), 900);
+      setInternalState("success");
+      resetTimer.current = setTimeout(() => setInternalState("idle"), 900);
     } catch {
-      setState("error");
+      setInternalState("error");
     }
   }
 
@@ -49,7 +64,7 @@ export default function SendButton({
   return (
     <button
       type="button"
-      className="send-btn px-6 py-2 rounded-lg font-medium min-w-[130px] h-11 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+      className="send-btn px-6 py-2 rounded-lg font-medium min-w-[130px] h-11 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
       style={{
         backgroundColor:
           state === "error"
@@ -63,7 +78,7 @@ export default function SendButton({
       data-state={state}
       aria-busy={state === "loading"}
       onClick={handleClick}
-      disabled={state === "loading"}
+      disabled={state === "loading" || disabled}
     >
       <span className="sr-only" aria-live="polite">
         {state === "loading" && "Sending message"}
