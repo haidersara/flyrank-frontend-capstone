@@ -1,4 +1,7 @@
+﻿"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import LiveClock from "@/components/LiveClock";
 
 const links = [
@@ -8,19 +11,31 @@ const links = [
   { href: "/3d", label: "3D" },
 ];
 
-// Server Component — the name is the logo. Everything else stays quiet under it.
 export default function Nav() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   return (
-    <header className="absolute top-0 left-0 right-0 z-20 border-b border-white/10 bg-transparent">
+    <header className="relative z-20 border-b border-white/10 bg-[#14181A]">
       <div className="mx-auto flex max-w-5xl flex-col gap-4 px-6 pb-6 pt-10 sm:px-8">
         <div className="flex items-start justify-between gap-6">
-          <Link
-            href="/"
-            className="group inline-flex items-baseline font-mono text-[13vw] font-bold leading-[0.85] tracking-tight text-[#F7F9FA] sm:text-[7rem] md:text-[8rem]"
-          >
-            SARA
-            <span className="ml-1 text-[#7FA39A]">.</span>
-          </Link>
+          {isHome ? (
+            <Link
+              href="/"
+              className="group inline-flex items-baseline font-mono text-[13vw] font-bold leading-[0.85] tracking-tight text-[#F7F9FA] sm:text-[7rem] md:text-[8rem]"
+            >
+              SARA
+              <span className="ml-1 text-[#7FA39A]">.</span>
+            </Link>
+          ) : (
+            <Link
+              href="/"
+              className="group inline-flex items-baseline font-mono text-2xl font-bold tracking-tight text-[#F7F9FA]"
+            >
+              SARA
+              <span className="ml-1 text-[#7FA39A]">.</span>
+            </Link>
+          )}
           <div className="mt-2 flex shrink-0 flex-col items-end gap-1 pt-2 text-right">
             <LiveClock />
             <span className="font-mono text-xs uppercase tracking-wide text-[#F7F9FA]/60">

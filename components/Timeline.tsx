@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 import Image from "next/image";
 
 const projects = [
@@ -11,10 +11,10 @@ const projects = [
     title: "Melodies",
     subtitle: "Flutter Music App",
     description: "A Flutter music app with real background audio playback. Full write-up lives in Work.",
-    image: "/images/melodies.jpg",
+    image: "/videos/melodies-preview.mp4",
     color: "#7FA39A",
     tags: ["Flutter", "Dart", "Audio"],
-    isVideo: false,
+    isVideo: true,
   },
   {
     id: 2,
@@ -22,10 +22,10 @@ const projects = [
     title: "CarryClicks",
     subtitle: "E-Commerce Platform",
     description: "Full-stack e-commerce platform with real-time inventory and payment processing.",
-    image: "/images/carryclicks.jpg",
+    image: "/videos/carryclicks-preview.mp4",
     color: "#24423F",
     tags: ["React", "Node.js", "PostgreSQL"],
-    isVideo: false,
+    isVideo: true,
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ const projects = [
     title: "AI Surveillance",
     subtitle: "AI-Powered Surveillance System",
     description: "Real-time AI surveillance system with object detection and alerting.",
-    image: "/images/ai-surveillance.jpg",
+    image: "/images/keyf-poster.jpg",
     color: "#14181A",
     tags: ["Python", "AI", "Computer Vision"],
     isVideo: false,
@@ -44,10 +44,10 @@ const projects = [
     title: "PBL Management",
     subtitle: "ERP System",
     description: "Project-Based Learning management system for educational institutions.",
-    image: "/images/pbl.jpg",
+    image: "/videos/PBL-preview.mp4",  // ← PBL video added!
     color: "#F7F9FA",
     tags: ["Next.js", "Tailwind", "Prisma"],
-    isVideo: false,
+    isVideo: true,  // ← Now a video!
   },
   {
     id: 5,
@@ -71,7 +71,7 @@ export default function Timeline() {
   });
 
   useEffect(() => {
-    const unsubscribe = scrollYProgress.onChange((value) => {
+    const unsubscribe = scrollYProgress.on("change", (value) => {
       const index = Math.min(
         Math.floor(value * projects.length),
         projects.length - 1
@@ -83,11 +83,9 @@ export default function Timeline() {
 
   return (
     <div ref={containerRef} className="relative min-h-screen bg-[#14181A] py-24 px-4 md:px-8 overflow-hidden">
-      {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#14181A] via-[#1A2F2B] to-[#14181A] opacity-50" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -103,9 +101,7 @@ export default function Timeline() {
           </p>
         </motion.div>
 
-        {/* Timeline Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left: Project Cards */}
           <div className="space-y-10">
             {projects.map((project, index) => {
               const isActive = index === activeIndex;
@@ -166,7 +162,6 @@ export default function Timeline() {
             })}
           </div>
 
-          {/* Right: Image/Video Display - BIGGER */}
           <div className="sticky top-24">
             <motion.div
               key={activeIndex}
@@ -175,24 +170,24 @@ export default function Timeline() {
               transition={{ duration: 0.6 }}
               className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-[#24423F]/30 border border-[#7FA39A]/20 shadow-2xl"
             >
-              {projects[activeIndex]?.image ? (
-                projects[activeIndex].isVideo ? (
-                  <video
-                    src={projects[activeIndex].image}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <Image
-                    src={projects[activeIndex].image}
-                    alt={projects[activeIndex].title}
-                    fill
-                    className="object-cover"
-                  />
-                )
+              {projects[activeIndex]?.isVideo ? (
+                <video
+                  src={projects[activeIndex].image}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                  key={activeIndex}
+                />
+              ) : projects[activeIndex]?.image ? (
+                <Image
+                  src={projects[activeIndex].image}
+                  alt={projects[activeIndex].title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-[#7FA39A] text-3xl font-mono">
                   {projects[activeIndex]?.title}
@@ -213,7 +208,6 @@ export default function Timeline() {
               </div>
             </motion.div>
 
-            {/* Progress indicator */}
             <div className="flex justify-center gap-3 mt-8">
               {projects.map((_, index) => (
                 <button
