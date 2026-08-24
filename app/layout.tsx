@@ -43,7 +43,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Move viewport to separate export
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -60,6 +59,17 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
+      <head>
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="flex min-h-full flex-col bg-bg text-text">
         <a
           href="#main-content"
