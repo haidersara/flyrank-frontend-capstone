@@ -1,6 +1,7 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import PhoneStack from "@/components/PhoneStack";
 import Reveal from "@/components/Reveal";
+import HeroCharacter from "@/components/HeroCharacter";
 
 export default function Home() {
   return (
@@ -15,7 +16,7 @@ export default function Home() {
               I build functional, working Flutter mobile apps.
             </h1>
             <p className="max-w-xl text-lg text-text/80">
-              Placeholder intro — proof is Melodies, a Flutter music app with
+              Placeholder intro - proof is Melodies, a Flutter music app with
               real background audio playback. Full write-up lives in Work.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -36,7 +37,10 @@ export default function Home() {
         </Reveal>
 
         <Reveal delay={150}>
-          <PhoneStack />
+          <div className="relative">
+            <HeroCharacter />
+            <PhoneStack />
+          </div>
         </Reveal>
       </div>
     </div>
