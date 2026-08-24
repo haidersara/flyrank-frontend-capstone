@@ -5,6 +5,7 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/work", label: "Work" },
   { href: "/contact", label: "Contact" },
+  { href: "/3d", label: "3D" },  // ✅ Added 3D link here
 ];
 
 // Server Component — the name is the logo. Everything else stays quiet under it.
