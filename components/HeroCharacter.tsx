@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 
@@ -20,16 +20,26 @@ const LINES: Line[] = [
   { text: "scroll down, more below ↓", emotion: "excited" },
 ];
 
-export default function HeroCharacter() {
+type HeroCharacterProps = {
+  overrideText?: string | null;
+  overrideEmotion?: Emotion | null;
+};
+
+export default function HeroCharacter({
+  overrideText = null,
+  overrideEmotion = null,
+}: HeroCharacterProps) {
   const [lineIndex, setLineIndex] = useState(0);
   const [typed, setTyped] = useState("");
   const [phase, setPhase] = useState<"typing" | "pausing" | "deleting">(
     "typing"
   );
 
-  const currentEmotion = LINES[lineIndex].emotion;
+  const cyclingEmotion = LINES[lineIndex].emotion;
 
   useEffect(() => {
+    if (overrideText) return;
+
     const currentLine = LINES[lineIndex].text;
 
     if (phase === "typing") {
@@ -60,12 +70,15 @@ export default function HeroCharacter() {
         setPhase("typing");
       }
     }
-  }, [typed, phase, lineIndex]);
+  }, [typed, phase, lineIndex, overrideText]);
+
+  const displayText = overrideText ?? typed;
+  const currentEmotion = overrideText ? overrideEmotion ?? "happy" : cyclingEmotion;
 
   return (
     <div className="hero-character-wrap">
       <div className="speech-bubble">
-        <span className="font-mono">{typed}</span>
+        <span className="font-mono">{displayText}</span>
         <span className="speech-cursor">|</span>
       </div>
 
@@ -76,16 +89,12 @@ export default function HeroCharacter() {
         viewBox="0 0 72 72"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* body */}
         <rect x="8" y="16" width="56" height="48" rx="16" fill="var(--color-main)" />
-        {/* screen/face plate */}
         <rect x="16" y="26" width="40" height="26" rx="8" fill="var(--color-bg)" />
 
-        {/* blush cheeks — cute touch */}
         <circle cx="22" cy="44" r="3" fill="var(--color-accent-warm)" opacity="0.5" />
         <circle cx="50" cy="44" r="3" fill="var(--color-accent-warm)" opacity="0.5" />
 
-        {/* --- eyes, swapped per emotion --- */}
         {currentEmotion === "default" && (
           <>
             <circle className="hero-character-eye" cx="28" cy="39" r="4" fill="var(--color-main)" />
@@ -124,7 +133,6 @@ export default function HeroCharacter() {
           </>
         )}
 
-        {/* --- mouth, swapped per emotion --- */}
         {(currentEmotion === "default" || currentEmotion === "thinking") && (
           <line x1="32" y1="46" x2="40" y2="46" stroke="var(--color-main)" strokeWidth="2.5" strokeLinecap="round" />
         )}
@@ -135,7 +143,6 @@ export default function HeroCharacter() {
           <ellipse cx="36" cy="46.5" rx="4" ry="3" fill="var(--color-main)" />
         )}
 
-        {/* antenna */}
         <line x1="36" y1="16" x2="36" y2="6" stroke="var(--color-main)" strokeWidth="3" strokeLinecap="round" />
         <circle
           cx="36"
