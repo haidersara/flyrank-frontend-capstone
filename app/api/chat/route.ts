@@ -1,4 +1,6 @@
 ﻿import { NextRequest } from "next/server";
+import { streamText } from "ai";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 // Simple in-memory rate limiting
 const rateLimit = new Map<string, { count: number; reset: number }>();
@@ -8,7 +10,7 @@ function checkRateLimit(ip: string): { allowed: boolean; remaining: number } {
   const limit = rateLimit.get(ip);
 
   if (!limit || now > limit.reset) {
-    rateLimit.set(ip, { count: 1, reset: now + 60000 }); // 1 minute window
+    rateLimit.set(ip, { count: 1, reset: now + 60000 });
     return { allowed: true, remaining: 9 };
   }
 
@@ -20,7 +22,7 @@ function checkRateLimit(ip: string): { allowed: boolean; remaining: number } {
   return { allowed: true, remaining: 10 - limit.count };
 }
 
-export const maxDuration = 30; // 30 seconds max
+export const maxDuration = 30;
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for") || "unknown";
@@ -41,17 +43,39 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // ... rest of your chat handler code
-  // (keep your existing Claude API logic here)
+  try {
+    const { messages } = await req.json();
 
-  // Add rate limit headers to successful responses
-  return new Response(
-    JSON.stringify(response),
-    {
+    const google = createGoogleGenerativeAI({
+      apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY || "",
+    });
+
+    const result = await streamText({
+      model: google("gemini-1.5-pro"),
+      messages,
+      system: `You are a helpful assistant for Sara Haider's portfolio. 
+               Answer questions about Sara's Flutter development work, projects, and skills.
+               Be concise, professional, and friendly.`,
+    });
+
+    // ✅ FIXED: Use toTextStreamResponse
+    return result.toTextStreamResponse({
       headers: {
-        "Content-Type": "application/json",
-        "X-RateLimit-Remaining": remaining.toString()
+        "X-RateLimit-Remaining": remaining.toString(),
+      },
+    });
+  } catch (error) {
+    console.error("Chat API Error:", error);
+    return new Response(
+      JSON.stringify({ 
+        error: "Something went wrong. Please try again." 
+      }),
+      { 
+        status: 500, 
+        headers: { 
+          "Content-Type": "application/json" 
+        } 
       }
-    }
-  );
+    );
+  }
 }
