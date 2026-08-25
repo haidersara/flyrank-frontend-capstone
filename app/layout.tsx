@@ -4,8 +4,6 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import "./globals.css";
 import ChatFab from "@/components/chat-fab";
-import { RobotProvider } from "@/components/RobotContext";
-import FloatingRobot from "@/components/FloatingRobot";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -59,7 +57,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`  h-full antialiased`}
+      className={`h-full antialiased`}
     >
       <head>
         <link
@@ -73,21 +71,18 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-full flex-col bg-bg text-text">
-        <RobotProvider>
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-[#24423F] focus:text-white focus:p-4 focus:rounded-lg"
-          >
-            Skip to main content
-          </a>
-          <Nav />
-          <main id="main-content" className="flex-1">
-            {children}
-          </main>
-          <Footer />
-          <ChatFab />
-          <FloatingRobot />
-        </RobotProvider>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-[#24423F] focus:text-white focus:p-4 focus:rounded-lg"
+        >
+          Skip to main content
+        </a>
+        <Nav />
+        <main id="main-content" className="flex-1">
+          {children}
+        </main>
+        <Footer />
+        <ChatFab />
       </body>
     </html>
   );

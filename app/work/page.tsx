@@ -1,7 +1,4 @@
-﻿"use client";
-
-import Link from "next/link";
-import { useRobot } from "@/components/RobotContext";
+﻿import Link from "next/link";
 
 const projects = [
   {
@@ -12,8 +9,6 @@ const projects = [
     video: "/videos/melodies-preview.mp4",
     tags: ["Flutter", "Dart", "Audio"],
     link: "/work/melodies",
-    robotMessage: "Learned Flutter in Android Studio — my mobile app, with real background audio playback!",
-    robotEmotion: "excited" as const,
   },
   {
     id: 2,
@@ -23,8 +18,6 @@ const projects = [
     video: "/videos/carryclicks-preview.mp4",
     tags: ["React", "Node.js", "PostgreSQL"],
     link: "/work/carryclicks",
-    robotMessage: "My first web dev course project — a bags shop site called CarryClicks.",
-    robotEmotion: "happy" as const,
   },
   {
     id: 3,
@@ -34,8 +27,6 @@ const projects = [
     video: "/videos/keyf-preview.mp4",
     tags: ["HTML", "CSS", "JavaScript"],
     link: "/work/keyf",
-    robotMessage: "A WordPress coffee shop site — tested SEO on this one too.",
-    robotEmotion: "wink" as const,
   },
   {
     id: 4,
@@ -45,14 +36,19 @@ const projects = [
     video: "/videos/PBL-preview.mp4",
     tags: ["Next.js", "Tailwind", "Prisma"],
     link: "/work/pbl-management",
-    robotMessage: "The ERP I'm currently building — a learning management system for my internship.",
-    robotEmotion: "thinking" as const,
+  },
+  {
+    id: 5,
+    title: "Car Racing Game",
+    category: "x86 Assembly Game",
+    description: "Real-time racing game in x86 Assembly with player movement, two enemy cars, collision detection, scoring system, and progressive difficulty.",
+    video: "/videos/racing-game-preview.mp4",
+    tags: ["x86 Assembly", "EMU8086", "Low-Level", "Game Dev"],
+    link: "/work/racing-game",
   },
 ];
 
 export default function WorkPage() {
-  const { setRobotMessage, clearRobotMessage } = useRobot();
-
   return (
     <main className="min-h-screen bg-[#14181A] px-4 py-12 md:px-8 md:py-20">
       <div className="max-w-6xl mx-auto">
@@ -70,9 +66,7 @@ export default function WorkPage() {
             <Link
               key={project.id}
               href={project.link}
-              onMouseEnter={() => setRobotMessage(project.robotMessage, project.robotEmotion)}
-              onMouseLeave={() => clearRobotMessage()}
-              className="group block bg-[#1A2F2B] rounded-2xl overflow-hidden border border-[#7FA39A]/10 hover:border-[#7FA39A]/40 transition-all duration-500 hover:shadow-xl hover:shadow-[#7FA39A]/5 hover:-translate-y-1"
+              className="group block bg-[#1A2F2B] rounded-2xl overflow-hidden border border-[#7FA39A]/10 hover:border-[#7FA39A]/40 transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
             >
               <div className="relative aspect-video bg-[#0D1A17] overflow-hidden">
                 <video
@@ -111,10 +105,6 @@ export default function WorkPage() {
               </div>
             </Link>
           ))}
-        </div>
-
-        <div className="mt-16 text-center text-[#7FA39A]/40 text-sm">
-          <p>More projects coming soon.</p>
         </div>
       </div>
     </main>
